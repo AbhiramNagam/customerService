@@ -1,6 +1,8 @@
+// Import required modules
 const express = require('express');
 const pool = require('./db'); // Import the database connection pool
 
+// Create Express app
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -33,6 +35,23 @@ app.post('/login', (req, res) => {
       // Authentication failed
       res.status(401).send('Incorrect username or password');
     }
+  });
+});
+
+// POST route to submit an issue
+app.post('/submit-issue', (req, res) => {
+  const { username, issueType, issueDescription } = req.body;
+
+  // Query to insert the issue into the database
+  const sql = 'INSERT INTO customer_issues (issueUser, issueType, issueDescription) VALUES (?, ?, ?)';
+  pool.query(sql, [username, issueType, issueDescription], (err, results) => {
+    if (err) {
+      console.error('Error submitting issue:', err);
+      res.status(500).send('Error submitting issue');
+      return;
+    }
+
+    res.status(200).send('Issue submitted successfully');
   });
 });
 

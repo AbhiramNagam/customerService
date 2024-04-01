@@ -12,25 +12,25 @@
   </header>
   
   <main>
-    <section id="welcome-message">
-      <p>Welcome, valued customer!</p>
-    </section>
-
     <section id="issue-form">
-      <h2>Report an Issue</h2>
-      <form id="issue-form" onsubmit="reportIssue(event)">
+      <h2>Submit Issue</h2>
+      <form id="submit-issue-form" onsubmit="submitIssue(event)">
+        <label for="username">Please enter your name:</label>
+        <input type="text" id="username" name="username" required>
         <label for="issue-type">Issue Type:</label>
-        <select id="issue-type" name="issue-type" required>
+        <select id="issue-type" name="issue-type">
           <option value="critical">Critical</option>
           <option value="non-critical">Non-Critical</option>
           <option value="moderate">Moderate</option>
         </select>
-        <label for="issue-description">Description:</label>
+        <label for="issue-description">Issue Description:</label>
         <textarea id="issue-description" name="issue-description" rows="4" required></textarea>
-        <button type="submit">Submit</button>
+        <button type="submit" style="margin-top: 10px;">Submit Issue</button>
+        <p id="submit-error" style="color: red; display: none;">Error submitting issue. Please try again.</p>
+        <p id="submit-success" style="color: green; display: none;">Issue submitted successfully.</p>
       </form>
     </section>
-
+    
     <section id="logout-button">
       <button onclick="logout()">Logout</button>
     </section>
@@ -40,22 +40,53 @@
     <p>&copy; 2024 E-Customer Service</p>
   </footer>
 
+  <script src="server.js"></script>
   <script>
-    function reportIssue(event) {
+    function submitIssue(event) {
       event.preventDefault();
-      
+
       // Get form data
+      const username = document.getElementById('username').value;
       const issueType = document.getElementById('issue-type').value;
       const issueDescription = document.getElementById('issue-description').value;
-      
-      // Example: Send issue report to server (you can adjust this according to your server-side logic)
-      console.log('Issue Type:', issueType);
-      console.log('Issue Description:', issueDescription);
+
+      // Send issue submission request to server
+      fetch('/submit-issue', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, issueType, issueDescription })
+      })
+      .then(response => {
+        if (response.ok) {
+          // Issue submitted successfully
+          // Display success message
+          document.getElementById('submit-success').style.display = 'block';
+          // Clear the text fields
+          document.getElementById('username').value = '';
+          document.getElementById('issue-type').value = '';
+          document.getElementById('issue-description').value = '';
+          // Hide error message if previously displayed
+          document.getElementById('submit-error').style.display = 'none';
+        } else {
+          // Issue submission failed
+          document.getElementById('submit-error').style.display = 'block';
+          // Hide success message if previously displayed
+          document.getElementById('submit-success').style.display = 'none';
+        }
+      })
+      .catch(error => {
+        console.error('Error submitting issue:', error);
+        document.getElementById('submit-error').style.display = 'block';
+        // Hide success message if previously displayed
+        document.getElementById('submit-success').style.display = 'none';
+      });
     }
 
     function logout() {
-      // Redirect to login page
-      window.location.href = 'index.html';
+      // Redirect to the login page
+      window.location.href = '/index.html';
     }
   </script>
 </body>
