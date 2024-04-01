@@ -13,4 +13,11 @@ CREATE TABLE userlogin (
 );
 INSERT INTO userlogin (username, password) VALUES ('user1', 'user1');
 
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'your_password';
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'RootmySQL#753!';
+
+CREATE TABLE customer_issues (
+    issueUser VARCHAR(255),
+    issueType VARCHAR(50),
+    issueDescription TEXT
+);
+select * from customer_issues;
