@@ -1,5 +1,7 @@
 //db queries
 
+//NOTE: For admin login the default username and password is 'admin'
+
 CREATE DATABASE customerServiceDatabase;
 
 USE customerServiceDatabase;
