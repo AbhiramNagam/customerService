@@ -44,9 +44,10 @@
   <table>
     <thead>
       <tr>
+        <th>ID</th>
         <th>Username</th>
         <th>Issue Type</th>
-        <th>Issue Description</th>
+        <th>Description</th>
         <th>Issue Status</th>
       </tr>
     </thead>
@@ -69,6 +70,7 @@
           complaints.forEach(complaint => {
             const row = document.createElement('tr');
             row.innerHTML = `
+              <td>${complaint.issueID}</td>
               <td>${complaint.issueUser}</td>
               <td>${complaint.issueType}</td>
               <td>${complaint.issueDescription}</td>
