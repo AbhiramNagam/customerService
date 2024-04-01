@@ -26,12 +26,14 @@
         <label for="issue-description">Issue Description:</label>
         <textarea id="issue-description" name="issue-description" rows="4" required></textarea>
         <button type="submit" style="margin-top: 10px;">Submit Issue</button>
+        <!-- "Complaint Status" button -->
+        <button onclick="viewComplaintStatus()" style="margin-left: 10px; margin-right: 5px;">Complaint Status</button>
         <p id="submit-error" style="color: red; display: none;">Error submitting issue. Please try again.</p>
         <p id="submit-success" style="color: green; display: none;">Issue submitted successfully.</p>
       </form>
     </section>
     
-    <section id="logout-button">
+    <section id="logout-button" style="margin-top: -20px;">
       <button onclick="logout()">Logout</button>
     </section>
   </main>
@@ -87,6 +89,11 @@
     function logout() {
       // Redirect to the login page
       window.location.href = '/index.html';
+    }
+
+    // Function to redirect to complaint status page
+    function viewComplaintStatus() {
+      window.location.href = '/complaintStatus.html';
     }
   </script>
 </body>
