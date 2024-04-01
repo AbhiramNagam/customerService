@@ -4,8 +4,60 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Complaint Status</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
 </head>
 <body>
-  <h1>Welcome to Complaint Status</h1>
+  <h1>Customer Issues</h1>
+  <table id="customer-issues-table">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Issue Type</th>
+        <th>Issue Description</th>
+        <th>Issue Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Data will be dynamically inserted here -->
+    </tbody>
+  </table>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('/get-customer-issues')
+        .then(response => response.json())
+        .then(data => {
+          const tableBody = document.querySelector('#customer-issues-table tbody');
+          data.forEach(issue => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${issue.issueUser}</td>
+              <td>${issue.issueType}</td>
+              <td>${issue.issueDescription}</td>
+              <td>${issue.issueStatus}</td>
+            `;
+            tableBody.appendChild(row);
+          });
+        })
+        .catch(error => {
+          console.error('Error fetching customer issues:', error);
+        });
+    });
+  </script>
 </body>
 </html>

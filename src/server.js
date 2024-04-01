@@ -55,6 +55,21 @@ app.post('/submit-issue', (req, res) => {
   });
 });
 
+// GET route to retrieve customer issues
+app.get('/get-customer-issues', (req, res) => {
+  // Query to select all customer issues
+  const sql = 'SELECT * FROM customer_issues';
+  pool.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error fetching customer issues:', err);
+      res.status(500).send('Error fetching customer issues');
+      return;
+    }
+
+    res.json(results);
+  });
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
