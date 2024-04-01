@@ -76,9 +76,9 @@
               <td>${complaint.issueDescription}</td>
               <td>
                 <select onchange="updateIssueStatus(this.value, ${complaint.issueID})">
-                  <option value="pending" ${complaint.issueStatus === 'pending' ? 'selected' : ''}>Pending</option>
-                  <option value="in_progress" ${complaint.issueStatus === 'in_progress' ? 'selected' : ''}>In Progress</option>
-                  <option value="resolved" ${complaint.issueStatus === 'resolved' ? 'selected' : ''}>Resolved</option>
+                  <option value="Pending" ${complaint.issueStatus === 'Pending' ? 'selected' : ''}>Pending</option>
+                  <option value="Resolved" ${complaint.issueStatus === 'Resolved' ? 'selected' : ''}>Resolved</option>
+                  <option value="Unrelated" ${complaint.issueStatus === 'Unrelated' ? 'selected' : ''}>Unrelated</option>
                 </select>
               </td>
             `;
