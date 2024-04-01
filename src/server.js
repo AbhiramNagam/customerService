@@ -43,7 +43,7 @@ app.post('/submit-issue', (req, res) => {
   const { username, issueType, issueDescription } = req.body;
 
   // Query to insert the issue into the database
-  const sql = 'INSERT INTO customer_issues (issueUser, issueType, issueDescription, issueStatus) VALUES (?, ?, ?, ?)';
+  const sql = 'INSERT INTO customerIssuesData (issueUser, issueType, issueDescription, issueStatus) VALUES (?, ?, ?, ?)';
   pool.query(sql, [username, issueType, issueDescription, 'pending'], (err, results) => {
     if (err) {
       console.error('Error submitting issue:', err);
@@ -60,7 +60,7 @@ app.post('/get-customer-issues', (req, res) => {
   const { username } = req.body;
 
   // Query to retrieve customer issues for the given username
-  const sql = 'SELECT * FROM customer_issues WHERE issueUser = ?';
+  const sql = 'SELECT * FROM customerIssuesData WHERE issueUser = ?';
   pool.query(sql, [username], (err, results) => {
     if (err) {
       console.error('Error fetching customer issues:', err);
@@ -75,7 +75,7 @@ app.post('/get-customer-issues', (req, res) => {
 // POST route to fetch all complaints for admin view
 app.get('/admin-complaints', (req, res) => {
   // Query to retrieve all complaints from the database
-  const sql = 'SELECT * FROM customer_issues';
+  const sql = 'SELECT * FROM customerIssuesData';
   pool.query(sql, (err, results) => {
     if (err) {
       console.error('Error fetching complaints:', err);
@@ -84,6 +84,23 @@ app.get('/admin-complaints', (req, res) => {
     }
 
     res.json(results);
+  });
+});
+
+// POST route for user registration
+app.post('/register', (req, res) => {
+  const { username, password } = req.body;
+
+  // Query to insert the user details into the database
+  const sql = 'INSERT INTO userlogin (username, password) VALUES (?, ?)';
+  pool.query(sql, [username, password], (err, results) => {
+    if (err) {
+      console.error('Error registering user:', err);
+      res.status(500).send('Error registering user');
+      return;
+    }
+
+    res.status(200).send('User registered successfully');
   });
 });
 

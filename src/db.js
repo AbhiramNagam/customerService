@@ -7,7 +7,7 @@ const pool = mysql.createPool({
   port: 3306,
   user: 'root',
   password: 'RootmySQL#753!',
-  database: 'customer_service' // Change the database name
+  database: 'customerServiceDatabase' // Change the database name
 });
 
 // Check if the connection pool has been created successfully

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Customer Service</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>E-Customer Service</h1>
+  </header>
+  
+  <main>
+    <section id="register-form" class="container">
+      <h2>Register</h2>
+      <form onsubmit="register(event)">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit">Register</button>
+        <p id="registration-success" style="color: green; display: none;">Registration successful. You can now login</a>.</p>
+        <p id="registration-error" style="color: red; display: none;">Registration failed. Please try again.</p>
+      </form>
+    </section>
+    
+    <section id="login-link">
+      <p>Already have an account? <a href="index.html">Login here</a></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 E-Customer Service</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    function register(event) {
+      event.preventDefault();
+
+      // Get form data
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      // Send registration request to server
+      fetch('/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+      })
+      .then(response => {
+        if (response.ok) {
+          // Registration successful
+          document.getElementById('registration-success').style.display = 'block';
+          document.getElementById('registration-error').style.display = 'none';
+          document.getElementById('username').value = ''; // Clear input fields
+          document.getElementById('password').value = '';
+        } else {
+          // Registration failed
+          document.getElementById('registration-error').style.display = 'block';
+          document.getElementById('registration-success').style.display = 'none';
+        }
+      })
+      .catch(error => {
+        console.error('Error during registration:', error);
+        alert('An error occurred during registration. Please try again later.');
+      });
+    }
+  </script>
+</body>
+</html>
