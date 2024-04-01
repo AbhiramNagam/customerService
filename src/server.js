@@ -72,7 +72,7 @@ app.post('/get-customer-issues', (req, res) => {
   });
 });
 
-// POST route to fetch all complaints for admin view
+// GET route to fetch all complaints for admin view
 app.get('/admin-complaints', (req, res) => {
   // Query to retrieve all complaints from the database
   const sql = 'SELECT * FROM customerIssuesData';
@@ -84,6 +84,23 @@ app.get('/admin-complaints', (req, res) => {
     }
 
     res.json(results);
+  });
+});
+
+// POST route to update issue status
+app.post('/update-issue-status', (req, res) => {
+  const { issueID, newStatus } = req.body;
+
+  // Query to update issue status in the database
+  const sql = 'UPDATE customerIssuesData SET issueStatus = ? WHERE issueID = ?';
+  pool.query(sql, [newStatus, issueID], (err, results) => {
+    if (err) {
+      console.error('Error updating issue status:', err);
+      res.status(500).send('Error updating issue status');
+      return;
+    }
+
+    res.status(200).send('Issue status updated successfully');
   });
 });
 

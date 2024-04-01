@@ -63,7 +63,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      fetch('/admin-complaints') // Change endpoint to fetch admin complaints
+      fetch('/admin-complaints')
         .then(response => response.json())
         .then(complaints => {
           const tableBody = document.getElementById('complaints-table-body');
@@ -74,7 +74,13 @@
               <td>${complaint.issueUser}</td>
               <td>${complaint.issueType}</td>
               <td>${complaint.issueDescription}</td>
-              <td>${complaint.issueStatus}</td>
+              <td>
+                <select onchange="updateIssueStatus(this.value, ${complaint.issueID})">
+                  <option value="pending" ${complaint.issueStatus === 'pending' ? 'selected' : ''}>Pending</option>
+                  <option value="in_progress" ${complaint.issueStatus === 'in_progress' ? 'selected' : ''}>In Progress</option>
+                  <option value="resolved" ${complaint.issueStatus === 'resolved' ? 'selected' : ''}>Resolved</option>
+                </select>
+              </td>
             `;
             tableBody.appendChild(row);
           });
@@ -83,6 +89,24 @@
           console.error('Error fetching complaints:', error);
         });
     });
+
+    function updateIssueStatus(status, issueID) {
+      fetch('/update-issue-status', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ issueID, newStatus: status })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Issue status updated successfully:', data);
+        // Optionally, you can update the UI to reflect the change
+      })
+      .catch(error => {
+        console.error('Error updating issue status:', error);
+      });
+    }
   </script>
 </body>
 </html>
