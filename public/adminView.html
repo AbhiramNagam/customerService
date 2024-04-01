@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin View - Customer Complaints</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      margin-right: auto; /* Push the logout button to the right */
+    }
+    button.logout-btn {
+      background-color: black;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Admin View - Customer Complaints</h1>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </header>
+  
+  <table>
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Issue Type</th>
+        <th>Issue Description</th>
+        <th>Issue Status</th>
+      </tr>
+    </thead>
+    <tbody id="complaints-table-body">
+      <!-- Complaints will be inserted here dynamically -->
+    </tbody>
+  </table>
+
+  <script>
+    function logout() {
+      // Redirect to index.html page
+      window.location.href = 'index.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('/admin-complaints') // Change endpoint to fetch admin complaints
+        .then(response => response.json())
+        .then(complaints => {
+          const tableBody = document.getElementById('complaints-table-body');
+          complaints.forEach(complaint => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${complaint.issueUser}</td>
+              <td>${complaint.issueType}</td>
+              <td>${complaint.issueDescription}</td>
+              <td>${complaint.issueStatus}</td>
+            `;
+            tableBody.appendChild(row);
+          });
+        })
+        .catch(error => {
+          console.error('Error fetching complaints:', error);
+        });
+    });
+  </script>
+</body>
+</html>

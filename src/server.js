@@ -72,6 +72,21 @@ app.post('/get-customer-issues', (req, res) => {
   });
 });
 
+// POST route to fetch all complaints for admin view
+app.get('/admin-complaints', (req, res) => {
+  // Query to retrieve all complaints from the database
+  const sql = 'SELECT * FROM customer_issues';
+  pool.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error fetching complaints:', err);
+      res.status(500).send('Error fetching complaints');
+      return;
+    }
+
+    res.json(results);
+  });
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
