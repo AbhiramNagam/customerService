@@ -15,11 +15,48 @@
     <section id="welcome-message">
       <p>Welcome, valued customer!</p>
     </section>
+
+    <section id="issue-form">
+      <h2>Report an Issue</h2>
+      <form id="issue-form" onsubmit="reportIssue(event)">
+        <label for="issue-type">Issue Type:</label>
+        <select id="issue-type" name="issue-type" required>
+          <option value="critical">Critical</option>
+          <option value="non-critical">Non-Critical</option>
+          <option value="moderate">Moderate</option>
+        </select>
+        <label for="issue-description">Description:</label>
+        <textarea id="issue-description" name="issue-description" rows="4" required></textarea>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <section id="logout-button">
+      <button onclick="logout()">Logout</button>
+    </section>
   </main>
 
   <footer>
     <p>&copy; 2024 E-Customer Service</p>
   </footer>
+
+  <script>
+    function reportIssue(event) {
+      event.preventDefault();
+      
+      // Get form data
+      const issueType = document.getElementById('issue-type').value;
+      const issueDescription = document.getElementById('issue-description').value;
+      
+      // Example: Send issue report to server (you can adjust this according to your server-side logic)
+      console.log('Issue Type:', issueType);
+      console.log('Issue Description:', issueDescription);
+    }
+
+    function logout() {
+      // Redirect to login page
+      window.location.href = 'index.html';
+    }
+  </script>
 </body>
 </html>
-
