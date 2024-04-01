@@ -43,8 +43,8 @@ app.post('/submit-issue', (req, res) => {
   const { username, issueType, issueDescription } = req.body;
 
   // Query to insert the issue into the database
-  const sql = 'INSERT INTO customer_issues (issueUser, issueType, issueDescription) VALUES (?, ?, ?)';
-  pool.query(sql, [username, issueType, issueDescription], (err, results) => {
+  const sql = 'INSERT INTO customer_issues (issueUser, issueType, issueDescription, issueStatus) VALUES (?, ?, ?, ?)';
+  pool.query(sql, [username, issueType, issueDescription, 'pending'], (err, results) => {
     if (err) {
       console.error('Error submitting issue:', err);
       res.status(500).send('Error submitting issue');
@@ -55,11 +55,13 @@ app.post('/submit-issue', (req, res) => {
   });
 });
 
-// GET route to retrieve customer issues
-app.get('/get-customer-issues', (req, res) => {
-  // Query to select all customer issues
-  const sql = 'SELECT * FROM customer_issues';
-  pool.query(sql, (err, results) => {
+// POST route to fetch customer issues for a specific username
+app.post('/get-customer-issues', (req, res) => {
+  const { username } = req.body;
+
+  // Query to retrieve customer issues for the given username
+  const sql = 'SELECT * FROM customer_issues WHERE issueUser = ?';
+  pool.query(sql, [username], (err, results) => {
     if (err) {
       console.error('Error fetching customer issues:', err);
       res.status(500).send('Error fetching customer issues');

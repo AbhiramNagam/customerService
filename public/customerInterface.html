@@ -8,15 +8,15 @@
 </head>
 <body>
   <header>
-    <h1>Welcome to Customer Interface</h1>
+    <h1>Welcome to Complaint registration</h1>
   </header>
   
   <main>
     <section id="issue-form">
       <h2>Submit Issue</h2>
       <form id="submit-issue-form" onsubmit="submitIssue(event)">
-        <label for="username">Please enter your name:</label>
-        <input type="text" id="username" name="username" required>
+        <label for="username">Please enter your username(Mandatory):</label>
+        <input type="text" id="username" name="username" required> <!-- Made the name field required -->
         <label for="issue-type">Issue Type:</label>
         <select id="issue-type" name="issue-type">
           <option value="critical">Critical</option>
