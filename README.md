@@ -18,6 +18,5 @@ CREATE TABLE customerIssuesData (
     issueUser VARCHAR(50),
     issueType VARCHAR(50),
     issueDescription TEXT,
-    issueStatus VARCHAR(25) DEFAULT 'pending'
+    issueStatus VARCHAR(25) DEFAULT 'Pending'
 );
-select * from customerIssuesData;
