@@ -108,18 +108,35 @@ app.post('/update-issue-status', (req, res) => {
 app.post('/register', (req, res) => {
   const { username, password } = req.body;
 
-  // Query to insert the user details into the database
-  const sql = 'INSERT INTO userlogin (username, password) VALUES (?, ?)';
-  pool.query(sql, [username, password], (err, results) => {
-    if (err) {
-      console.error('Error registering user:', err);
-      res.status(500).send('Error registering user');
+  // Query to check if the username already exists in the database
+  const checkUserSql = 'SELECT * FROM userlogin WHERE username = ?';
+  pool.query(checkUserSql, [username], (checkErr, checkResults) => {
+    if (checkErr) {
+      console.error('Error checking username:', checkErr);
+      res.status(500).send('Error checking username');
       return;
     }
 
-    res.status(200).send('User registered successfully');
+    if (checkResults.length > 0) {
+      // Username already exists
+      res.status(409).send('Registration failed. Please try again with another username.');
+      return;
+    }
+
+    // Username is unique, proceed with registration
+    const insertUserSql = 'INSERT INTO userlogin (username, password) VALUES (?, ?)';
+    pool.query(insertUserSql, [username, password], (insertErr, insertResults) => {
+      if (insertErr) {
+        console.error('Error registering user:', insertErr);
+        res.status(500).send('Error registering user');
+        return;
+      }
+
+      res.status(200).send('User registered successfully');
+    });
   });
 });
+
 
 // Start server
 app.listen(PORT, () => {

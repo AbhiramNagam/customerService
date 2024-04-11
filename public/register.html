@@ -21,7 +21,7 @@
         <input type="password" id="password" name="password" required>
         <button type="submit">Register</button>
         <p id="registration-success" style="color: green; display: none;">Registration successful. You can now login</a>.</p>
-        <p id="registration-error" style="color: red; display: none;">Registration failed. Please try again.</p>
+        <p id="registration-error" style="color: red; display: none;"></p>
       </form>
     </section>
     
@@ -60,8 +60,17 @@
           document.getElementById('password').value = '';
         } else {
           // Registration failed
-          document.getElementById('registration-error').style.display = 'block';
-          document.getElementById('registration-success').style.display = 'none';
+          response.text().then(message => {
+            if (message.includes('Username already exists')) {
+              // Username already exists
+              document.getElementById('registration-error').innerHTML = 'Please try another username.';
+            } else {
+              // Other registration error
+              document.getElementById('registration-error').innerHTML = 'Registration failed. Please try again.';
+            }
+            document.getElementById('registration-error').style.display = 'block';
+            document.getElementById('registration-success').style.display = 'none';
+          });
         }
       })
       .catch(error => {
