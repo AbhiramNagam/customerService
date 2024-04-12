@@ -13,10 +13,10 @@
   
   <main>
     <section id="issue-form">
-      <h2>Submit Issue</h2>
+      <h2>Welcome, <span id="username-display"></span>!</h2>
+      <span style="padding: 25%;"></span>
+      <h3>Submit your Issue here</h3>
       <form id="submit-issue-form" onsubmit="submitIssue(event)">
-        <label for="username">Please enter your username(Mandatory):</label>
-        <input type="text" id="username" name="username" required> <!-- Made the name field required -->
         <label for="issue-type">Issue Type:</label>
         <select id="issue-type" name="issue-type">
           <option value="critical">Critical</option>
@@ -26,7 +26,6 @@
         <label for="issue-description">Issue Description:</label>
         <textarea id="issue-description" name="issue-description" rows="4" required></textarea>
         <button type="submit" style="margin-top: 10px;">Submit Issue</button>
-        <!-- "Complaint Status" button -->
         <button onclick="viewComplaintStatus()" style="margin-top: 10px;">Complaint Status</button>
         <p id="submit-error" style="color: red; display: none;">Error submitting issue. Please try again.</p>
         <p id="submit-success" style="color: green; display: none;">Issue submitted successfully.</p>
@@ -42,13 +41,16 @@
     <p>&copy; 2024 E-Customer Service</p>
   </footer>
 
-  <script src="server.js"></script>
   <script>
+    // Retrieve username from session storage
+    const username = sessionStorage.getItem('username');
+    // Display username
+    document.getElementById('username-display').textContent = username;
+
     function submitIssue(event) {
       event.preventDefault();
 
       // Get form data
-      const username = document.getElementById('username').value;
       const issueType = document.getElementById('issue-type').value;
       const issueDescription = document.getElementById('issue-description').value;
 
@@ -63,35 +65,29 @@
       .then(response => {
         if (response.ok) {
           // Issue submitted successfully
-          // Display success message
           document.getElementById('submit-success').style.display = 'block';
-          // Clear the text fields
-          document.getElementById('username').value = '';
           document.getElementById('issue-type').value = '';
           document.getElementById('issue-description').value = '';
-          // Hide error message if previously displayed
           document.getElementById('submit-error').style.display = 'none';
         } else {
-          // Issue submission failed
           document.getElementById('submit-error').style.display = 'block';
-          // Hide success message if previously displayed
           document.getElementById('submit-success').style.display = 'none';
         }
       })
       .catch(error => {
         console.error('Error submitting issue:', error);
         document.getElementById('submit-error').style.display = 'block';
-        // Hide success message if previously displayed
         document.getElementById('submit-success').style.display = 'none';
       });
     }
 
     function logout() {
+      // Remove username from session storage
+      sessionStorage.removeItem('username');
       // Redirect to the login page
       window.location.href = '/index.html';
     }
 
-    // Function to redirect to complaint status page
     function viewComplaintStatus() {
       window.location.href = '/complaintStatus.html';
     }

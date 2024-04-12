@@ -30,7 +30,7 @@ app.post('/login', (req, res) => {
 
     if (results.length > 0) {
       // User authenticated successfully
-      res.status(200).send('Login successful');
+      res.status(200).json({ username });
     } else {
       // Authentication failed
       res.status(401).send('Incorrect username or password');
@@ -136,7 +136,6 @@ app.post('/register', (req, res) => {
     });
   });
 });
-
 
 // Start server
 app.listen(PORT, () => {

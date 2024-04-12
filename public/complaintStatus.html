@@ -20,17 +20,29 @@
     th {
       background-color: #f2f2f2;
     }
+
+    /* Style for back button */
+    .back-button {
+      background-color: black;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
   </style>
 </head>
 <body>
-  <h1>Customer Issues</h1>
+  <!-- Back button -->
+  <button class="back-button" onclick="goBack()">Back</button>
+
+  <h1>Registered Complaints</h1>
   
-  <!-- Add username input field -->
-  <form id="username-form" onsubmit="fetchCustomerIssues(event)">
-    <label for="username">Enter your username:</label>
-    <input type="text" id="username" name="username" required>
-    <button type="submit">Check Complaint Status</button>
-  </form>
+  <!-- Add username display -->
+  <p>Welcome, <span id="username-display"></span>!</p>
 
   <table id="customer-issues-table">
     <thead>
@@ -48,10 +60,17 @@
   </table>
 
   <script>
-    function fetchCustomerIssues(event) {
-      event.preventDefault();
+    // Retrieve username from session storage
+    const username = sessionStorage.getItem('username');
+    // Display username
+    document.getElementById('username-display').textContent = username;
 
-      const username = document.getElementById('username').value;
+    // Fetch customer issues
+    fetchCustomerIssues();
+
+    function fetchCustomerIssues() {
+      // Retrieve username from session storage if not available from previous page
+      const username = sessionStorage.getItem('username');
 
       fetch('/get-customer-issues', {
         method: 'POST',
@@ -79,6 +98,11 @@
       .catch(error => {
         console.error('Error fetching customer issues:', error);
       });
+    }
+
+    // Function to go back to the previous page
+    function goBack() {
+      window.history.back();
     }
   </script>
 </body>

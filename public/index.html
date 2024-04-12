@@ -53,12 +53,18 @@
       })
       .then(response => {
         if (response.ok) {
-          // Redirect to customer interface page
-          window.location.href = '/customerInterface.html';
+          return response.json();
         } else {
           // Display login error message
           document.getElementById('login-error').style.display = 'block';
+          throw new Error('Login failed');
         }
+      })
+      .then(data => {
+        // Store username in session storage
+        sessionStorage.setItem('username', data.username);
+        // Redirect to customer interface page
+        window.location.href = '/customerInterface.html';
       })
       .catch(error => console.error('Error during login:', error));
     }
